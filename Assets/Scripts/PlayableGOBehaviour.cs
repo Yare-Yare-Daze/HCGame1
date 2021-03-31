@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayableGOBehaviour : MonoBehaviour
 {
     public float speed;
-    public Vector2 rangePositions;
+    public Transform planet;
+    //public Vector3 targetDirection;
 
     private bool isRight = true;
-    private Vector3 targetDirection = Vector3.right;
+    private float multiplier = 1;
+    private Vector3 targetDirection = Vector3.zero;
+    //private Vector3 targetDirection = Vector3.right;
     
     void Start()
     {
@@ -17,18 +20,20 @@ public class PlayableGOBehaviour : MonoBehaviour
     
     void Update()
     {
-        if (isRight && transform.position.x >= rangePositions.y)
+        if (Input.GetKey(KeyCode.Space)) { multiplier = 2; }
+        else { multiplier = 1; }
+        targetDirection = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.A))
         {
-            targetDirection = Vector3.left;
-            isRight = false;
+            targetDirection = Vector3.forward;
         }
-        else if (!isRight && transform.position.x <= rangePositions.x)
+        else if (Input.GetKey(KeyCode.D))
         {
-            targetDirection = Vector3.right;
-            isRight = true;
+            targetDirection = Vector3.back;
         }
         
-        transform.position += targetDirection * (speed * Time.deltaTime);
+        transform.RotateAround(planet.position, targetDirection, speed * multiplier * Time.deltaTime);
     }
     
 }
