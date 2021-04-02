@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class PlayableGOBehaviour : MonoBehaviour
 {
+    [HideInInspector] public bool weaponCollide = false;
+    [HideInInspector] public bool playerCollide = false;
+    [HideInInspector] public int health = 2;
+    
     public float speed;
     public Transform planet;
-    public Camera camera;
+    public GameObject weapon;
 
     private bool isRight = true;
     private float multiplier = 1;
@@ -15,15 +19,12 @@ public class PlayableGOBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        //camHight = camera.orthographicSize;
-        //camWidth = camHight * camera.aspect;
-        //Debug.Log(camWidth);
-        //Debug.Log(camHight);
+        
     }
 
     void Start()
     {
-        //Debug.Log(screenWidth);
+        
     }
     
     void Update()
@@ -31,6 +32,16 @@ public class PlayableGOBehaviour : MonoBehaviour
         if (Input.GetKey(KeyCode.Space)) { multiplier = 2; }
         else { multiplier = 1; }
         targetDirection = Vector3.zero;
+
+        
+        if (Input.GetKey(KeyCode.KeypadEnter))
+        {
+            weapon.SetActive(true);
+        }
+        else
+        {
+            weapon.SetActive(false);
+        }
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -42,12 +53,19 @@ public class PlayableGOBehaviour : MonoBehaviour
         }
         
         transform.RotateAround(planet.position, targetDirection, speed * multiplier * Time.deltaTime);
+
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Enemy")
         {
+            health--;
+            playerCollide = true;
             Destroy(other.gameObject);
         }
     }
