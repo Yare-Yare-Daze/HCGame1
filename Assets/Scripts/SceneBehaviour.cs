@@ -7,8 +7,10 @@ using Random = UnityEngine.Random;
 
 public class SceneBehaviour : MonoBehaviour
 {
-    [HideInInspector]public static float camHight;
-    [HideInInspector]public static float camWidth;
+    [HideInInspector] public static float camHight;
+    [HideInInspector] public static float camWidth;
+    [HideInInspector] public static float screenHight;
+    [HideInInspector] public static float screenWidth;
     
     public Vector2 force;
     public Camera camera;
@@ -31,8 +33,10 @@ public class SceneBehaviour : MonoBehaviour
         camWidth = camHight * camera.aspect;
         rateHight = new Vector2(-camHight, camHight);
         rateWidth = new Vector2(-camWidth, camWidth);
-    }
 
+        screenHight = Screen.height;
+        screenWidth = Screen.width;
+    }
     void Start()
     {
         playableGOBehaviour = GameObject.Find("Player").GetComponent<PlayableGOBehaviour>();
