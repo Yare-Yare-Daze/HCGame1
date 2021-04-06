@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -17,6 +18,7 @@ public class SceneBehaviour : MonoBehaviour
     public GameObject enemyPrefab;
     public Text scoreText;
     public Text healthText;
+    public Text looseText;
 
     private int score = 0;
     private GameObject enemyGO;
@@ -43,6 +45,7 @@ public class SceneBehaviour : MonoBehaviour
         planetBehaviour = GameObject.Find("Planet").GetComponent<PlanetBehaviour>();
         scoreText.text = "Score: " + score;
         healthText.text = "Health: " + playableGOBehaviour.health;
+        looseText.gameObject.SetActive(false);
         StartCoroutine("spawnEnemy");
     }
 
@@ -59,6 +62,17 @@ public class SceneBehaviour : MonoBehaviour
         {
             healthText.text = "Health: " + playableGOBehaviour.health;
             playableGOBehaviour.playerCollide = false;
+        }
+
+        if (playableGOBehaviour.health <= 0)
+        {
+            playableGOBehaviour.gameObject.SetActive(false);
+            StartCoroutine(endGame());
+        }
+
+        if (!planetBehaviour.gameObject.activeSelf)
+        {
+            StartCoroutine(endGame());
         }
 ;    }
 
@@ -81,9 +95,17 @@ public class SceneBehaviour : MonoBehaviour
             Vector3 spawnPosition = new Vector3(xSpawnPos, ySpawnPos, 0);
             
             Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>().AddForce(force);
-            //rb2d = enemyGO.GetComponent<Rigidbody2D>();
-            //rb2d.AddForce(force);
             yield return new WaitForSeconds(1.5f);
         }
+    }
+
+    public IEnumerator endGame()
+    {
+        Time.timeScale = 0;
+        looseText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(2.0f);
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
+        
     }
 }

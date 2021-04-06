@@ -73,10 +73,10 @@ public class PlayableGOBehaviour : MonoBehaviour
         
         transform.RotateAround(planet.position, targetDirection, speed * multiplier * Time.deltaTime);
 
-        if (health <= 0)
+        /*if (health <= 0)
         {
             gameObject.SetActive(false);
-        }
+        }*/
     }
 
     private void OnTriggerEnter2D(Collider2D other)
