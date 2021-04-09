@@ -18,6 +18,10 @@ public class PlayableGOBehaviour : MonoBehaviour
     private Touch firstTouch;
     private Touch secondTouch;
     private float thirdScreenWidth;
+    private int tapCount = 0;
+    private float maxDoubleTouchTime = 0.15f;
+    private float endDoubleTouchTime;
+    private float ttime;
 
     public int Health
     {
@@ -50,50 +54,23 @@ public class PlayableGOBehaviour : MonoBehaviour
     void Update()
     {
         targetDirection = Vector3.zero;
-        /*if (Input.GetKey(KeyCode.Space)) { multiplier = 2; }
-        else { multiplier = 1; }
-        targetDirection = Vector3.zero;
-
         
-        if (Input.GetKey(KeyCode.KeypadEnter))
-        {
-            weapon.SetActive(true);
-        }
-        else
-        {
-            weapon.SetActive(false);
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            targetDirection = Vector3.forward;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            targetDirection = Vector3.back;
-        }*/
-
-       
         weapon.SetActive(false);
         if (Input.touchCount > 0)
         {
             firstTouch = Input.GetTouch(0);
+
+            checkTouchPosition(firstTouch);
+            
             if (Input.touchCount > 1)
             {
                 secondTouch = Input.GetTouch(1);
+                checkTouchPosition(secondTouch);
             }
-
-            checkTouchPosition(firstTouch);
-            checkTouchPosition(secondTouch);
 
         }
         
         transform.RotateAround(planet.position, targetDirection, speed * multiplier * Time.deltaTime);
-
-        /*if (health <= 0)
-        {
-            gameObject.SetActive(false);
-        }*/
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -107,9 +84,19 @@ public class PlayableGOBehaviour : MonoBehaviour
     }
 
     private void checkTouchPosition(Touch touch)
-    {            
+    {
         if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
         {
+            
+            if (tapCount == 2 && ttime <= endDoubleTouchTime)
+            {
+                multiplier = 2;
+            }
+            else
+            {
+                multiplier = 1;
+            }
+            
             if (touch.position.x <= thirdScreenWidth)
             {
                 targetDirection = Vector3.forward;
@@ -123,6 +110,28 @@ public class PlayableGOBehaviour : MonoBehaviour
                 weapon.SetActive(true);
             }
         }
+        else if(Time.time > endDoubleTouchTime)
+        {
+            tapCount = 0;
+            ttime = 0;
+        }
+
+        if (touch.phase == TouchPhase.Began)
+        {
+            tapCount += 1;
+        }
+        
+        if (tapCount == 1)
+        {
+            endDoubleTouchTime = Time.time + maxDoubleTouchTime;
+        }
+
+        if (tapCount == 2 && ttime == 0)
+        {
+            ttime = Time.time;
+        }
+        
+        Debug.Log(tapCount);
     }
 
 }

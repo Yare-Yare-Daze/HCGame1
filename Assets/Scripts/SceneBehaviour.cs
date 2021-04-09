@@ -12,13 +12,14 @@ public class SceneBehaviour : MonoBehaviour
     [HideInInspector] public static float camWidth;
     [HideInInspector] public static float screenHight;
     [HideInInspector] public static float screenWidth;
-    
+
     [SerializeField] private Vector2 force;
     [SerializeField] private Camera camera;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text healthText;
     [SerializeField] private Text looseText;
+    [SerializeField] private bool testMode = false;
 
     private int score = 0;
     private GameObject enemyGO;
@@ -46,7 +47,7 @@ public class SceneBehaviour : MonoBehaviour
         scoreText.text = "Score: " + score;
         healthText.text = "Health: " + playableGOBehaviour.Health;
         looseText.gameObject.SetActive(false);
-        StartCoroutine("spawnEnemy");
+        if (!testMode) { StartCoroutine("spawnEnemy"); }
     }
 
     void Update()

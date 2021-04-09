@@ -633,7 +633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1293952462
 RectTransform:
   m_ObjectHideFlags: 0
@@ -797,6 +797,7 @@ MonoBehaviour:
   scoreText: {fileID: 1013128774}
   healthText: {fileID: 662970906}
   looseText: {fileID: 1293952463}
+  testMode: 0
 --- !u!1 &1374692799
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +828,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6591d5977a32fad4c90e4d7256e0ba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collide: 0
   speedRotate: 10
   rotateDirection: {x: -2, y: 5, z: 0}
   armor: {fileID: 1773303699}
@@ -863,12 +863,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.2
---- !u!1 &1407598645 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4622461040250172408, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
-    type: 3}
-  m_PrefabInstance: {fileID: 479276661178322716}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1773303699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,20 +1081,10 @@ PrefabInstance:
       propertyPath: planet
       value: 
       objectReference: {fileID: 1374692801}
-    - target: {fileID: 781186785147359209, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
-        type: 3}
-      propertyPath: weapon
-      value: 
-      objectReference: {fileID: 1407598645}
     - target: {fileID: 896760208248488180, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6705501091732327150, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03d9d0047ef7f3e4daccba25cb99fdd5, type: 3}
