@@ -5,21 +5,38 @@ using UnityEngine;
 
 public class PlayableGOBehaviour : MonoBehaviour
 {
-    [HideInInspector] public bool weaponCollide = false;
-    [HideInInspector] public bool playerCollide = false;
-    [HideInInspector] public int health = 2;
+    private bool weaponCollide = false;
+    private bool playerCollide = false;
+    private int health = 2;
     
-    public float speed;
-    public Transform planet;
-    public GameObject weapon;
+    [SerializeField] private float speed;
+    [SerializeField] private Transform planet;
+    [SerializeField] private GameObject weapon;
 
-    private bool isRight = true;
     private float multiplier = 1;
     private Vector3 targetDirection = Vector3.zero;
     private Touch firstTouch;
     private Touch secondTouch;
-    float thirdScreenWidth;
+    private float thirdScreenWidth;
 
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    public bool PlayerCollide
+    {
+        get { return playerCollide; }
+        set { playerCollide = value; }
+    }
+    
+    public bool WeaponCollide
+    {
+        get { return weaponCollide; }
+        set { weaponCollide = value; }
+    }
+    
     private void Awake()
     {
         

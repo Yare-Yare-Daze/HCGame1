@@ -72,9 +72,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c645ff555d4ade4483ea3d0be69360a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponCollide: 0
+  playerCollide: 0
+  health: 2
   speed: 150
-  collide: 0
   planet: {fileID: 0}
+  weapon: {fileID: 4622461040250172408}
 --- !u!1 &1534359426065279134
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,9 +265,9 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.25

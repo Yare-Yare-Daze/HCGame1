@@ -13,12 +13,12 @@ public class SceneBehaviour : MonoBehaviour
     [HideInInspector] public static float screenHight;
     [HideInInspector] public static float screenWidth;
     
-    public Vector2 force;
-    public Camera camera;
-    public GameObject enemyPrefab;
-    public Text scoreText;
-    public Text healthText;
-    public Text looseText;
+    [SerializeField] private Vector2 force;
+    [SerializeField] private Camera camera;
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Text healthText;
+    [SerializeField] private Text looseText;
 
     private int score = 0;
     private GameObject enemyGO;
@@ -44,27 +44,27 @@ public class SceneBehaviour : MonoBehaviour
         playableGOBehaviour = GameObject.Find("Player").GetComponent<PlayableGOBehaviour>();
         planetBehaviour = GameObject.Find("Planet").GetComponent<PlanetBehaviour>();
         scoreText.text = "Score: " + score;
-        healthText.text = "Health: " + playableGOBehaviour.health;
+        healthText.text = "Health: " + playableGOBehaviour.Health;
         looseText.gameObject.SetActive(false);
         StartCoroutine("spawnEnemy");
     }
 
     void Update()
     {
-        if (playableGOBehaviour.weaponCollide)
+        if (playableGOBehaviour.WeaponCollide)
         {
             score++;
             scoreText.text = "Score: " + score;
-            playableGOBehaviour.weaponCollide = false;
+            playableGOBehaviour.WeaponCollide = false;
         }
 
-        if (playableGOBehaviour.playerCollide)
+        if (playableGOBehaviour.PlayerCollide)
         {
-            healthText.text = "Health: " + playableGOBehaviour.health;
-            playableGOBehaviour.playerCollide = false;
+            healthText.text = "Health: " + playableGOBehaviour.Health;
+            playableGOBehaviour.PlayerCollide = false;
         }
 
-        if (playableGOBehaviour.health <= 0)
+        if (playableGOBehaviour.Health <= 0)
         {
             playableGOBehaviour.gameObject.SetActive(false);
             StartCoroutine(endGame());

@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class PlanetBehaviour : MonoBehaviour
 {
-    [HideInInspector] public bool collide = false;
+    private bool collide = false;
     
-    public float speedRotate;
-    public Vector3 rotateDirection;
-    public GameObject armor;
-    
+    [SerializeField] private float speedRotate;
+    [SerializeField] private Vector3 rotateDirection;
+    [SerializeField] private GameObject armor;
+
+    public bool Collide
+    {
+        get { return collide; }
+        set { collide = value; }
+    }
     
     void Start()
     {

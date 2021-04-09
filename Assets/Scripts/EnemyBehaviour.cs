@@ -19,12 +19,12 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (other.tag == "Weapon")
         {
-            other.GetComponentInParent<PlayableGOBehaviour>().weaponCollide = true;
+            other.GetComponentInParent<PlayableGOBehaviour>().WeaponCollide = true;
             Destroy(gameObject);
         }
         else if (other.tag == "Armor")
         {
-            other.GetComponentInParent<PlanetBehaviour>().collide = true;
+            other.GetComponentInParent<PlanetBehaviour>().Collide = true;
             Destroy(gameObject);
         }
     }
