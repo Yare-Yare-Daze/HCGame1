@@ -17,7 +17,6 @@ public class SceneBehaviour : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Text scoreText;
-    [SerializeField] private Text healthText;
     [SerializeField] private Text looseText;
     [SerializeField] private bool testMode = false;
 
@@ -45,7 +44,6 @@ public class SceneBehaviour : MonoBehaviour
         playableGOBehaviour = GameObject.Find("Player").GetComponent<PlayableGOBehaviour>();
         planetBehaviour = GameObject.Find("Planet").GetComponent<PlanetBehaviour>();
         scoreText.text = "Score: " + score;
-        healthText.text = "Health: " + playableGOBehaviour.Health;
         looseText.gameObject.SetActive(false);
         if (!testMode) { StartCoroutine("spawnEnemy"); }
     }
@@ -57,18 +55,6 @@ public class SceneBehaviour : MonoBehaviour
             score++;
             scoreText.text = "Score: " + score;
             playableGOBehaviour.WeaponCollide = false;
-        }
-
-        if (playableGOBehaviour.PlayerCollide)
-        {
-            healthText.text = "Health: " + playableGOBehaviour.Health;
-            playableGOBehaviour.PlayerCollide = false;
-        }
-
-        if (playableGOBehaviour.Health <= 0)
-        {
-            playableGOBehaviour.gameObject.SetActive(false);
-            StartCoroutine(endGame());
         }
 
         if (!planetBehaviour.gameObject.activeSelf)

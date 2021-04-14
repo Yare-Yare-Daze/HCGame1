@@ -6,9 +6,7 @@ using UnityEngine;
 public class PlayableGOBehaviour : MonoBehaviour
 {
     private bool weaponCollide = false;
-    private bool playerCollide = false;
-    private int health = 2;
-    
+
     [SerializeField] private float speed;
     [SerializeField] private Transform planet;
     [SerializeField] private GameObject weapon;
@@ -17,24 +15,14 @@ public class PlayableGOBehaviour : MonoBehaviour
     private Vector3 targetDirection = Vector3.zero;
     private Touch firstTouch;
     private Touch secondTouch;
-    private float thirdScreenWidth;
+    private float halfScreenWidth;
+    private bool isRight = false;
     private int tapCount = 0;
-    private float maxDoubleTouchTime = 0.15f;
+    private float maxDoubleTouchTime = 0.2f;
     private float endDoubleTouchTime;
-    private float ttime;
+    private float timeTwoTapCount;
+    private bool isDoubleTouch = false;
 
-    public int Health
-    {
-        get { return health; }
-        set { health = value; }
-    }
-
-    public bool PlayerCollide
-    {
-        get { return playerCollide; }
-        set { playerCollide = value; }
-    }
-    
     public bool WeaponCollide
     {
         get { return weaponCollide; }
@@ -48,14 +36,14 @@ public class PlayableGOBehaviour : MonoBehaviour
 
     void Start()
     {
-        thirdScreenWidth = SceneBehaviour.screenWidth / 3.0f;
+        halfScreenWidth = SceneBehaviour.screenWidth / 2.0f;
+        weapon.SetActive(true);
     }
     
     void Update()
     {
         targetDirection = Vector3.zero;
         
-        weapon.SetActive(false);
         if (Input.touchCount > 0)
         {
             firstTouch = Input.GetTouch(0);
@@ -73,65 +61,86 @@ public class PlayableGOBehaviour : MonoBehaviour
         transform.RotateAround(planet.position, targetDirection, speed * multiplier * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Enemy")
-        {
-            health--;
-            playerCollide = true;
-            Destroy(other.gameObject);
-        }
-    }
-
     private void checkTouchPosition(Touch touch)
     {
+        if (touch.phase == TouchPhase.Began)
+        {
+            tapCount += 1;
+        }
+        
+        if (tapCount == 2 && timeTwoTapCount == 0)
+        {
+            Debug.Log("It is working!");
+            timeTwoTapCount = Time.time;
+        }
+        
         if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
         {
             
-            if (tapCount == 2 && ttime <= endDoubleTouchTime)
+            if (tapCount >= 2)
             {
-                multiplier = 2;
+                if ((timeTwoTapCount <= endDoubleTouchTime) && checkDirection(touch))
+                {
+                    multiplier = 2;
+                }
+                isDoubleTouch = true;
             }
             else
             {
                 multiplier = 1;
             }
             
-            if (touch.position.x <= thirdScreenWidth)
+            if (touch.position.x <= halfScreenWidth)
             {
                 targetDirection = Vector3.forward;
-            }
-            else if(touch.position.x >= thirdScreenWidth * 2)
-            {
-                targetDirection = Vector3.back;
+                
             }
             else
             {
-                weapon.SetActive(true);
+                targetDirection = Vector3.back;
+                
             }
-        }
-        else if(Time.time > endDoubleTouchTime)
+        } 
+        else if(Time.time > endDoubleTouchTime && isDoubleTouch)
         {
             tapCount = 0;
-            ttime = 0;
-        }
-
-        if (touch.phase == TouchPhase.Began)
-        {
-            tapCount += 1;
+            timeTwoTapCount = 0;
+            isDoubleTouch = false;
         }
         
-        if (tapCount == 1)
+        if (touch.phase == TouchPhase.Ended)
         {
-            endDoubleTouchTime = Time.time + maxDoubleTouchTime;
-        }
+            if (tapCount == 1)
+            {
+                endDoubleTouchTime = Time.time + maxDoubleTouchTime;
+            }
 
-        if (tapCount == 2 && ttime == 0)
-        {
-            ttime = Time.time;
+            if (touch.position.x <= halfScreenWidth)
+            {
+                isRight = false;
+            }
+            else
+            {
+                isRight = true;
+            }
         }
         
+
         Debug.Log(tapCount);
+        Debug.Log(endDoubleTouchTime);
+        Debug.Log(checkDirection(touch));
+    }
+
+    private bool checkDirection(Touch touch)
+    {
+        if ((isRight && touch.position.x > halfScreenWidth) || (!isRight && touch.position.x <= halfScreenWidth))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
