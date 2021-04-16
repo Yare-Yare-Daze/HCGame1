@@ -23,7 +23,7 @@ public class SceneBehaviour : MonoBehaviour
     private int score = 0;
     private GameObject enemyGO;
     private Rigidbody2D rb2d;
-    private PlayableGOBehaviour playableGOBehaviour;
+    private PlayableGOMovement playableGOMovement;
     private PlanetBehaviour planetBehaviour;
     private Vector2 rateWidth;
     private Vector2 rateHight;
@@ -41,7 +41,7 @@ public class SceneBehaviour : MonoBehaviour
     }
     void Start()
     {
-        playableGOBehaviour = GameObject.Find("Player").GetComponent<PlayableGOBehaviour>();
+        playableGOMovement = GameObject.Find("Player").GetComponent<PlayableGOMovement>();
         planetBehaviour = GameObject.Find("Planet").GetComponent<PlanetBehaviour>();
         scoreText.text = "Score: " + score;
         looseText.gameObject.SetActive(false);
@@ -50,11 +50,11 @@ public class SceneBehaviour : MonoBehaviour
 
     void Update()
     {
-        if (playableGOBehaviour.WeaponCollide)
+        if (playableGOMovement.WeaponCollide)
         {
             score++;
             scoreText.text = "Score: " + score;
-            playableGOBehaviour.WeaponCollide = false;
+            playableGOMovement.WeaponCollide = false;
         }
 
         if (!planetBehaviour.gameObject.activeSelf)

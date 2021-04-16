@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 520796897706449486}
   - component: {fileID: 781186785147359209}
-  - component: {fileID: 3757076329606966597}
+  - component: {fileID: 2244205828453132610}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -49,22 +49,18 @@ MonoBehaviour:
   speed: 150
   planet: {fileID: 0}
   weapon: {fileID: 4622461040250172408}
---- !u!58 &3757076329606966597
-CircleCollider2D:
+--- !u!114 &2244205828453132610
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 896760208248488180}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.25
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0dc02cec474974387051273b604785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1534359426065279134
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7765823009047338508}
   - component: {fileID: 4663635031017605830}
+  - component: {fileID: 1093596851302069493}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Weapon
@@ -241,3 +238,19 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!58 &1093596851302069493
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4622461040250172408}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.25
