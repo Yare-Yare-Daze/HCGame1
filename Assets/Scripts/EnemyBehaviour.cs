@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+
+    [SerializeField] private GameObject _explosionPrefab;
     void Start()
     {
         
@@ -20,12 +22,19 @@ public class EnemyBehaviour : MonoBehaviour
         if (other.tag == "Weapon")
         {
             other.GetComponentInParent<PlayableGOMovement>().WeaponCollide = true;
-            Destroy(gameObject);
+            Explosion();
         }
         else if (other.tag == "Armor")
         {
             other.GetComponentInParent<PlanetBehaviour>().Collide = true;
-            Destroy(gameObject);
+            Explosion();
         }
+    }
+
+    private void Explosion()
+    {
+        Instantiate(_explosionPrefab).transform.position = gameObject.transform.position;
+        
+        Destroy(gameObject);
     }
 }

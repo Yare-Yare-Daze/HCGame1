@@ -717,7 +717,7 @@ MonoBehaviour:
     type: 3}
   scoreText: {fileID: 1013128774}
   looseText: {fileID: 1293952463}
-  testMode: 1
+  testMode: 0
 --- !u!1 &1374692799
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,6 +998,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 781186785147359209, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
         type: 3}
+      propertyPath: speed
+      value: 175
+      objectReference: {fileID: 0}
+    - target: {fileID: 781186785147359209, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
+        type: 3}
       propertyPath: planet
       value: 
       objectReference: {fileID: 1374692801}
@@ -1005,6 +1010,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244205828453132610, guid: 03d9d0047ef7f3e4daccba25cb99fdd5,
+        type: 3}
+      propertyPath: _timeRecognitionDoubleTouch
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03d9d0047ef7f3e4daccba25cb99fdd5, type: 3}
