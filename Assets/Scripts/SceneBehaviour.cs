@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,6 +26,7 @@ public class SceneBehaviour : MonoBehaviour
     private PlanetBehaviour planetBehaviour;
     private Vector2 rateWidth;
     private Vector2 rateHight;
+    private Vector2 torque = new Vector2(-0.3f,0.3f);
 
     private void Awake()
     {
@@ -53,6 +53,10 @@ public class SceneBehaviour : MonoBehaviour
         if (playableGOMovement.WeaponCollide)
         {
             score++;
+            if (PlayerPrefs.GetInt("ScoreInt") < score)
+            {
+                PlayerPrefs.SetInt("ScoreInt", score);
+            }
             scoreText.text = "Score: " + score;
             playableGOMovement.WeaponCollide = false;
         }
@@ -80,8 +84,11 @@ public class SceneBehaviour : MonoBehaviour
                 force = new Vector2(Random.Range(-20, 20), 100);
             }
             Vector3 spawnPosition = new Vector3(xSpawnPos, ySpawnPos, 0);
+
+            Rigidbody2D enemyRB2D = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
+            enemyRB2D.AddForce(force);
+            enemyRB2D.AddTorque(Random.Range(torque.x, torque.y));
             
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>().AddForce(force);
             yield return new WaitForSeconds(1.5f);
         }
     }
@@ -89,6 +96,7 @@ public class SceneBehaviour : MonoBehaviour
     public IEnumerator endGame()
     {
         Time.timeScale = 0;
+        looseText.text = "You loose \n Best score is " + PlayerPrefs.GetInt("ScoreInt", 0);
         looseText.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(2.0f);
         Time.timeScale = 1;

@@ -85,8 +85,8 @@ public class PlayableGOInput : MonoBehaviour
             _tapCount = 0;
         }
         
-        print(_tapCount);
-        print(_clockwise);
+        //print(_tapCount);
+        //print(_clockwise);
     }
 
     private bool checkTouchPositionXMoreThenHalfWidthScreen()
