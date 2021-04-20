@@ -27,6 +27,7 @@ public class SceneBehaviour : MonoBehaviour
     private Vector2 rateWidth;
     private Vector2 rateHight;
     private Vector2 torque = new Vector2(-0.3f,0.3f);
+    private AudioSource audioScore;
 
     private void Awake()
     {
@@ -45,6 +46,7 @@ public class SceneBehaviour : MonoBehaviour
         planetBehaviour = GameObject.Find("Planet").GetComponent<PlanetBehaviour>();
         scoreText.text = "Score: " + score;
         looseText.gameObject.SetActive(false);
+        audioScore = gameObject.GetComponentInChildren<AudioSource>();
         if (!testMode) { StartCoroutine("spawnEnemy"); }
     }
 
@@ -53,6 +55,7 @@ public class SceneBehaviour : MonoBehaviour
         if (playableGOMovement.WeaponCollide)
         {
             score++;
+            audioScore.Play();
             if (PlayerPrefs.GetInt("ScoreInt") < score)
             {
                 PlayerPrefs.SetInt("ScoreInt", score);
@@ -100,7 +103,7 @@ public class SceneBehaviour : MonoBehaviour
         looseText.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(2.0f);
         Time.timeScale = 1;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
         
     }
 }
