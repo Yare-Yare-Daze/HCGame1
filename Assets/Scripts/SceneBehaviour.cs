@@ -92,7 +92,7 @@ public class SceneBehaviour : MonoBehaviour
             enemyRB2D.AddForce(force);
             enemyRB2D.AddTorque(Random.Range(torque.x, torque.y));
             
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.2f);
         }
     }
 
