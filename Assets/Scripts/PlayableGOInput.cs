@@ -16,7 +16,7 @@ public class PlayableGOInput : MonoBehaviour
     void Start()
     {
         _playableGOMovement = GetComponent<PlayableGOMovement>();
-        _halfWidthScreen = SceneBehaviour.screenWidth / 2.0f;
+        _halfWidthScreen = SceneBehaviour._screenWidth / 2.0f;
     }
     
     void Update()

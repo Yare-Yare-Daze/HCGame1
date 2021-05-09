@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,90 +8,113 @@ using Random = UnityEngine.Random;
 
 public class SceneBehaviour : MonoBehaviour
 {
-    [HideInInspector] public static float camHight;
-    [HideInInspector] public static float camWidth;
-    [HideInInspector] public static float screenHight;
-    [HideInInspector] public static float screenWidth;
+    [HideInInspector] public static float _camHight;
+    [HideInInspector] public static float _camWidth;
+    [HideInInspector] public static float _screenHight;
+    [HideInInspector] public static float _screenWidth;
 
-    [SerializeField] private Vector2 force;
-    [SerializeField] private Camera camera;
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text looseText;
-    [SerializeField] private bool testMode = false;
+    [SerializeField] private GameObject _playerGO;
+    [SerializeField] private GameObject _planetGO;
+    [SerializeField] private Vector2 _force;
+    [SerializeField] private Camera _camera;
+    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private Text _scoreText;
+    [SerializeField] private Text _looseText;
+    [SerializeField] private Text _helpText;
+    [SerializeField] private bool _testMode = false;
 
-    private int score = 0;
-    private GameObject enemyGO;
-    private Rigidbody2D rb2d;
-    private PlayableGOMovement playableGOMovement;
-    private PlanetBehaviour planetBehaviour;
-    private Vector2 rateWidth;
-    private Vector2 rateHight;
-    private Vector2 torque = new Vector2(-0.3f,0.3f);
-    private AudioSource audioScore;
+    private int _score = 0;
+    private int _tapHelpButton = 0;
+    private int _shipIndex;
+    private List<GameObject> _shipsGOs = new List<GameObject>();
+    private GameObject _enemyGO;
+    private Rigidbody2D _rb2d;
+    private PlayableGOMovement _playableGOMovement;
+    private PlanetBehaviour _planetBehaviour;
+    private Vector2 _rateWidth;
+    private Vector2 _rateHight;
+    private Vector2 _torque = new Vector2(-0.3f,0.3f);
+    private AudioSource _audioScore;
 
     private void Awake()
     {
-        if(!camera) return;
-        camHight = camera.orthographicSize;
-        camWidth = camHight * camera.aspect;
-        rateHight = new Vector2(-camHight, camHight);
-        rateWidth = new Vector2(-camWidth, camWidth);
+        if(!_camera) return;
+        _camHight = _camera.orthographicSize;
+        _camWidth = _camHight * _camera.aspect;
+        _rateHight = new Vector2(-_camHight, _camHight);
+        _rateWidth = new Vector2(-_camWidth, _camWidth);
 
-        screenHight = Screen.height;
-        screenWidth = Screen.width;
+        _screenHight = Screen.height;
+        _screenWidth = Screen.width;
     }
     void Start()
     {
-        playableGOMovement = GameObject.Find("Player").GetComponent<PlayableGOMovement>();
-        planetBehaviour = GameObject.Find("Planet").GetComponent<PlanetBehaviour>();
-        scoreText.text = "Score: " + score;
-        looseText.gameObject.SetActive(false);
-        audioScore = gameObject.GetComponentInChildren<AudioSource>();
-        if (!testMode) { StartCoroutine("spawnEnemy"); }
+        _playableGOMovement = _playerGO.GetComponent<PlayableGOMovement>();
+        _planetBehaviour = _planetGO.GetComponent<PlanetBehaviour>();
+        _scoreText.text = "Score: " + _score;
+        _looseText.gameObject.SetActive(false);
+        _audioScore = gameObject.GetComponentInChildren<AudioSource>();
+        _shipIndex = PlayerPrefs.GetInt("shipIndex");
+        Transform rootSpaceShipsGO = _playerGO.transform.GetChild(0);
+        
+        for (int i = 0; i < rootSpaceShipsGO.transform.childCount; i++)
+        {
+            _shipsGOs.Add(rootSpaceShipsGO.GetChild(i).gameObject);
+            if (i == PlayerPrefs.GetInt("shipIndex"))
+            {
+                _shipsGOs[i].SetActive(true);
+            }
+            else
+            {
+                _shipsGOs[i].SetActive(false);
+            }
+        }
+        
+        if (!_testMode) { StartCoroutine("spawnEnemy"); }
     }
 
     void Update()
     {
-        if (playableGOMovement.WeaponCollide)
+        if (_playableGOMovement.WeaponCollide)
         {
-            score++;
-            audioScore.Play();
-            if (PlayerPrefs.GetInt("ScoreInt") < score)
+            _score++;
+            _audioScore.Play();
+            if (PlayerPrefs.GetInt("ScoreInt") < _score)
             {
-                PlayerPrefs.SetInt("ScoreInt", score);
+                PlayerPrefs.SetInt("ScoreInt", _score);
             }
-            scoreText.text = "Score: " + score;
-            playableGOMovement.WeaponCollide = false;
+            _scoreText.text = "Score: " + _score;
+            _playableGOMovement.WeaponCollide = false;
         }
 
-        if (!planetBehaviour.gameObject.activeSelf)
+        if (!_planetBehaviour.gameObject.activeSelf)
         {
             StartCoroutine(endGame());
         }
-;    }
+        
+    }
 
     private IEnumerator spawnEnemy()
     {
         while (true)
         {
-            float xSpawnPos = Random.Range(rateWidth.x, rateWidth.y);
-            float ySpawnPos = Random.Range(rateHight.x, rateHight.y);
+            float xSpawnPos = Random.Range(_rateWidth.x, _rateWidth.y);
+            float ySpawnPos = Random.Range(_rateHight.x, _rateHight.y);
             if (ySpawnPos >= 0)
             {
-                ySpawnPos = rateHight.y;
-                force = new Vector2(Random.Range(-20, 20), -100);
+                ySpawnPos = _rateHight.y;
+                _force = new Vector2(Random.Range(-20, 20), -100);
             }
             else
             {
-                ySpawnPos = rateHight.x;
-                force = new Vector2(Random.Range(-20, 20), 100);
+                ySpawnPos = _rateHight.x;
+                _force = new Vector2(Random.Range(-20, 20), 100);
             }
             Vector3 spawnPosition = new Vector3(xSpawnPos, ySpawnPos, 0);
 
-            Rigidbody2D enemyRB2D = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
-            enemyRB2D.AddForce(force);
-            enemyRB2D.AddTorque(Random.Range(torque.x, torque.y));
+            Rigidbody2D enemyRB2D = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<Rigidbody2D>();
+            enemyRB2D.AddForce(_force);
+            enemyRB2D.AddTorque(Random.Range(_torque.x, _torque.y));
             
             yield return new WaitForSeconds(1.2f);
         }
@@ -99,11 +123,29 @@ public class SceneBehaviour : MonoBehaviour
     public IEnumerator endGame()
     {
         Time.timeScale = 0;
-        looseText.text = "You loose \n Best score is " + PlayerPrefs.GetInt("ScoreInt", 0);
-        looseText.gameObject.SetActive(true);
+        _looseText.text = "You loose \n Best score is " + PlayerPrefs.GetInt("ScoreInt", 0);
+        _looseText.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(2.0f);
         Time.timeScale = 1;
         SceneManager.LoadScene(1);
         
     }
+
+    public void clickHelpButton()
+    {
+        _tapHelpButton++;
+
+        if (_tapHelpButton == 1)
+        {
+            Time.timeScale = 0;
+            _helpText.gameObject.SetActive(true);
+        }
+        else if (_tapHelpButton == 2)
+        {
+            _helpText.gameObject.SetActive(false);
+            Time.timeScale = 1;
+            _tapHelpButton = 0;
+        }
+    }
+    
 }
